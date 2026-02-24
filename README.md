@@ -5,7 +5,7 @@
 
 ## 🎯 Project Overview
 
-Comprehensive supply chain analytics project analyzing $6.5B in global procurement spend across 10 countries, 200+ products, and 10 vendors to identify cost optimization opportunities and operational inefficiencies.
+Comprehensive supply chain analytics project analyzing $6.5B in global procurement spend across 10 countries, 200+ products, and 10 vendors to identify cost optimization opportunities and operational inefficiencies. Developed a purchase forecast model that helps managers see the cost implication of tariff increase and unit cost increase real time and mitigate the expected impact before they happen.
 
 **Built for:** Supply chain managers, procurement analysts, and logistics leaders needing data-driven insights to optimize procurement operations.
 
@@ -27,7 +27,8 @@ Comprehensive supply chain analytics project analyzing $6.5B in global procureme
 - **Problem:** -$2.29M total inventory discrepancy with LAX (-$0.41M) and Virginia (-$0.40M) warehouses showing 2-3x higher errors than Asian locations
 - **Root Cause:** Process discipline breakdown (not volume-related - all sites manage $530-557M inventory)
 - **Recommendation:** Implement Asian warehouse best practices (cycle count procedures, validation protocols)
-- **Projected Impact:** 60% discrepancy reduction = recover ~$1.4M shortage
+- **Projected Impact:** 95% Discrepancy reduction = recover ~$1.4M shortage
+![Inventory Discrepancy](images/inventory_discrepancy.jpg)
 
 **3. Dead Capital Trap: $4.34B Aged Inventory**
 - **Problem:** Aged inventory evenly distributed across 8 warehouses signals systemic over-ordering (not localized issue)
@@ -36,14 +37,41 @@ Comprehensive supply chain analytics project analyzing $6.5B in global procureme
 
 **4. Tariff Optimization: $22M Annual Savings Opportunity**
 - **Problem:** Top 3 HTS codes account for $2.87B (44% total spend) with varying duty rates
-- **Opportunity 1:** 0.5% duty reduction through HTS reclassification = $14M annual savings
-- **Opportunity 2:** Shift 20% China volume (highest duty at 7.7%) to Malaysia = $8M additional savings
+- **Opportunity 1:** 0.5% duty reduction through HTS reclassification = $14M annual savings.
+- **Recommendation:** These top 3 HTS codes should be prioritized for HTS reclassification review and duty reduction strategies.
 
-**5. Strategic Category Management: No Pareto Concentration**
+**5. Import Burden**
+- **Problem:** China has the lowest volume in terms of quantity ordered (5.48%) but the highest import burden (8.40%)
+- **Recommendation:** There is a need for an urgent sourcing review for products coming from China to optimize duties being paid since freight contribution is flat across all countries.
+![Import Burden and Purchase Forecast Model](images/import_burden.jpg)
+
+**6. Purchase Forecast Model**
+- **Insight:** The purchase forecast model provides a warning signal, telling managers that a 2% increase in tariff accompanied by a 20% increase in unit cost will take product cost from $6.05B to $7.26B, and landed cost from $6.55B to $7.86B issuing a tariff and unit cost warning. 
+- **Recommendation 1**: 
+	- **Negotiate with suppliers:** Lock in favorable unit pricing or volume discounts ahead of expected cost increases.
+- **Recommendation 2**:
+	- **Hedge tariff exposure:** Explore alternative sourcing countries or suppliers to mitigate potential tariff spikes.
+
+**7. Variance Model**
+- **Insight1:** The variance volume and price model allows the finance team to see the impact of volume and price and price on spend. Between 2023 and 2025, total landed cost remained stable with a landed cost variance of (-0.4%) which is (-21.5M) in three years.
+- **Insight 2:** Quarterly changes are majorly cost driven as supplier price movements offset volume-driven volatility recorded. 
+- **Recommendation1**: 
+	- Protect pricing discipline at high-growth periods.
+**Recommendation 2**:
+	- Monitor the behavior of the suppliers during demand spikes.
+**Recommendation 3**:	
+- Preserve margin stability as volume expands.
+![Variance Decomposition Model](images/variance_most_model.jpg)
+
+**8. Strategic Category Management: No Pareto Concentration**
 - **Insight:** Unlike typical 80/20 procurement patterns, all 5 product categories are strategically critical (19-25% spend each)
 - **Implication:** SKU rationalization must focus WITHIN categories (consolidate 79% SKU count driving 80% spend), not eliminate entire categories.
 
----
+**9. Vendor Fufillment**
+- **Insight 1:** Atlantic Trade Co had the highest order in terms of quantity ordered but MegaSupply Corp is the supplier that we spent the most money with in terms of total amount spent. 
+- **Insight 2:** Asia Source and Prime Vendors are our least performing vendors possessing 91% fufillment rate accumulating ~$35M in unfufilled orders each.
+- **Recommendation:** Add fufillment guarantees to SLA agreement with suppliers, while looking out to changing (increasing) suppliers received from Pacific Distribution (The vendor with the highest fufillment rate).
+![Vendor Performance](images/vendor_performance.jpg)
 
 ## 🔍 Analytical Approach
 
@@ -59,21 +87,21 @@ Comprehensive supply chain analytics project analyzing $6.5B in global procureme
 **Data Architecture:**
 ```
 Star Schema Design:
-├─ Fact Table: Procurement Transactions (50K+ rows)
+├─ Fact Table: Fact Purchase Orders (50K+ rows)
 └─ Dimension Tables:
    ├─ Date (Time Intelligence)
    ├─ Product (Category, Subcategory, SKU)
    ├─ Vendor (Performance Metrics)
-   ├─ Country (Geospatial Analysis)
-   ├─ HTS Code (Tariff Classification)
+   ├─ Status (Geospatial Analysis)
    └─ Warehouse (Inventory Operations)
 ```
+![Data Model](images/data_model.jpg)
 
 **Data Quality Framework:**
 - Validated 99.5% data completeness
 - Standardized inconsistent formats (dates, currencies, vendor names)
 - Removed duplicates and reconciled discrepancies
-- Implemented data validation rules
+- Implemented data validation rules ((flagged negative inventory wms, ERP different from WMS)
 
 ### Advanced Analytics Techniques
 
@@ -143,22 +171,44 @@ Star Schema Design:
 
 **Sample Complex DAX:**
 ```dax
-// Year-over-Year Growth with Error Handling
-YoY Growth % = 
-VAR CurrentYear = [Total Spend]
-VAR PreviousYear = CALCULATE([Total Spend], SAMEPERIODLASTYEAR('Date'[Date]))
-RETURN
-    IF(
-        ISBLANK(PreviousYear),
-        BLANK(),
-        DIVIDE(CurrentYear - PreviousYear, PreviousYear, 0)
+// Total Spend YoY KPI
+=VAR Curr = [Total Spend]
+VAR CurrentYear = MAX(Dim_Date[Year])
+VAR MinYear = MIN(Dim_Date[Year])
+VAR MultiYear = CurrentYear <> MinYear
+VAR PrevYear = CurrentYear - 1
+VAR Prev = 
+    CALCULATE(
+        [Total Spend],
+        ALL(Dim_Date),
+        Dim_Date[Year] = PrevYear
     )
+VAR ChangePct = DIVIDE(Curr - Prev, Prev)
 
-// Cycle Time Breakdown
-Vendor Processing Days = 
-CALCULATE(
-    AVERAGE('Procurement'[Vendor Processing Time]),
-    ALLSELECTED()
+RETURN
+IF(
+    MultiYear,
+    "Select Year",
+    IF(
+        ISBLANK(Prev) || Prev = 0,
+        "No Prior Year",
+        IF(
+            ChangePct > 0,
+            "vs " & PrevYear & " ▲ " & FORMAT(ChangePct, "0.0%"),
+            IF(
+                ChangePct < 0,
+                "vs " & PrevYear & " ▼ " & FORMAT(ABS(ChangePct), "0.0%"),
+                "vs " & PrevYear & " ▶ 0.0%"
+            )
+        )
+    )
+)
+
+// Fufillment Gap
+Fufillment Gap Value = 
+=CALCULATE(
+SUM([Fulfillment_Gap]), 
+Fact_Purchase_Orders[Data_Health_Severity]<>"Critical"
 )
 
 // Inventory Accuracy Rate
@@ -169,12 +219,9 @@ DIVIDE(
     0
 ) * -1 + 1
 
-// Working Capital Tied in Cycle
-Working Capital Impact = 
-VAR DailySpend = DIVIDE([Total Spend], 365, 0)
-VAR CycleDays = [Average Cycle Time]
-RETURN
-    DailySpend * CycleDays
+// Volume Effect
+=([Total Quantity Ordered] - [Quantity Previous Quarter]) * [Avg Unit Cost Prev Quarter]
+
 ```
 
 ### Data Transformation (Power Query)
@@ -203,7 +250,7 @@ RETURN
    - What's our tariff exposure? (HTS code analysis)
 
 2. **Data Exploration & Cleaning**
-   - Identified data quality issues (missing values, inconsistent formats)
+   - Identified data quality issues (missing values, inconsistent formats, negative WMS values)
    - Built validation rules and cleaning procedures
    - Documented assumptions and limitations
 
@@ -229,18 +276,19 @@ RETURN
 ```
 supply-chain-analytics/
 ├── data/
-│   ├── raw/                    # Original data files (synthetic for privacy)
-│   ├── processed/              # Cleaned data
-│   └── data_dictionary.md      # Field definitions
+│   ├── raw/                     # Original data files (synthetic/anonymized)
+│   └── processed/               # Cleaned and validated data
 ├── dashboard/
-│   ├── Supply_Chain_Dashboard.xlsx   # Main Excel file
-│   └── screenshots/            # Dashboard images
-├── documentation/
-│   ├── methodology.md          # Detailed analytical approach
-│   ├── insights_summary.pdf    # Executive presentation
-│   └── data_quality_report.md  # Validation results
+│   ├── supply_chain_full_project.xlsx   # Main Excel dashboard
+│   └── screenshots/             # Dashboard images
 ├── images/
-│   └── dashboard_preview.png   # README hero image
+│   ├── datamodel.jpg
+│   ├── executive_summary.jpg
+│   ├── import_burden.jpg
+│   ├── inventory_discrepancy.jpg
+│   ├── power_query.jpg
+│   ├── variance_most_model.jpg
+│   └── vendor_performance.jpg
 └── README.md
 ```
 
