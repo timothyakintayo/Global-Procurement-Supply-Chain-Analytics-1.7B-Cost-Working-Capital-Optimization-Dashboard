@@ -173,8 +173,8 @@ Star Schema Design:
 
 **Sample Complex DAX:**
 ```dax
-// Total Spend YoY KPI
-=VAR Curr = [Total Spend]
+// Total Spend YoY KPI=
+VAR Curr = [Total Spend]
 VAR CurrentYear = MAX(Dim_Date[Year])
 VAR MinYear = MIN(Dim_Date[Year])
 VAR MultiYear = CurrentYear <> MinYear
@@ -212,17 +212,6 @@ Fufillment Gap Value =
 SUM([Fulfillment_Gap]), 
 Fact_Purchase_Orders[Data_Health_Severity]<>"Critical"
 )
-
-// Inventory Accuracy Rate
-Inventory Accuracy % = 
-DIVIDE(
-    SUMX('Warehouse', ABS('Warehouse'[Discrepancy Amount])),
-    SUM('Warehouse'[Inventory Value]),
-    0
-) * -1 + 1
-
-// Volume Effect
-=([Total Quantity Ordered] - [Quantity Previous Quarter]) * [Avg Unit Cost Prev Quarter]
 
 ```
 
