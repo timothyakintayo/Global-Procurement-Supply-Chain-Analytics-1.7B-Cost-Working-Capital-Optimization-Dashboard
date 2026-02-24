@@ -169,7 +169,7 @@ Star Schema Design:
 
 ## 🛠️ Technical Implementation
 
-### Excel Power Pivot & DAX Measures (40+ Measures)
+### Excel Power Pivot & DAX Measures (25+ Measures)
 
 **Sample Complex DAX:**
 ```dax
