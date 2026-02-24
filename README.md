@@ -62,7 +62,7 @@ Comprehensive supply chain analytics project analyzing $6.5B in global procureme
 **Recommendation 3**:	
 - Preserve margin stability as volume expands.
 
-![Variance Decomposition Model](images/variance_most_model.jpg)
+![Variance Decomposition Model](images/variance_cost_model.jpg)
 
 **8. Strategic Category Management: No Pareto Concentration**
 - **Insight:** Unlike typical 80/20 procurement patterns, all 5 product categories are strategically critical (19-25% spend each)
