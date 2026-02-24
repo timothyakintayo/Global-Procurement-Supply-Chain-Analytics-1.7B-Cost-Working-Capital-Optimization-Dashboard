@@ -61,6 +61,7 @@ Comprehensive supply chain analytics project analyzing $6.5B in global procureme
 	- Monitor the behavior of the suppliers during demand spikes.
 **Recommendation 3**:	
 - Preserve margin stability as volume expands.
+
 ![Variance Decomposition Model](images/variance_most_model.jpg)
 
 **8. Strategic Category Management: No Pareto Concentration**
@@ -95,6 +96,7 @@ Star Schema Design:
    ├─ Status (Geospatial Analysis)
    └─ Warehouse (Inventory Operations)
 ```
+
 ![Data Model](images/data_model.jpg)
 
 **Data Quality Framework:**
