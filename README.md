@@ -5,7 +5,7 @@
 
 ## 🎯 Project Overview
 
-Comprehensive supply chain analytics project analyzing $6.5B in global procurement spend across 10 countries, 200+ products, and 10 vendors to identify cost optimization opportunities and operational inefficiencies. Developed a purchase forecast model that helps managers see the cost implication of tariff increase and unit cost increase real time and mitigate the expected impact before they happen.
+Comprehensive supply chain analytics project analyzing $6.5B in global procurement spend across 10 countries, 200+ products, and 10 vendors to identify cost optimization opportunities and operational inefficiencies. Identified $300M+ working capital optimization opportunities through cycle time analysis and inventory accuracy improvements. Developed a purchase forecast model that helps managers see the cost implication of tariff increase and unit cost increase real time and mitigate the expected impact before they happen. Built with Excel Power Pivot and DAX.
 
 **Built for:** Supply chain managers, procurement analysts, and logistics leaders needing data-driven insights to optimize procurement operations.
 
@@ -73,6 +73,10 @@ Comprehensive supply chain analytics project analyzing $6.5B in global procureme
 - **Insight 2:** Asia Source and Prime Vendors are our least performing vendors possessing 91% fufillment rate accumulating ~$35M in unfufilled orders each.
 - **Recommendation:** Add fufillment guarantees to SLA agreement with suppliers, while looking out to changing (increasing) suppliers received from Pacific Distribution (The vendor with the highest fufillment rate).
 ![Vendor Performance](images/vendor_performance.jpg)
+
+**10. Live Demonstration Import Burden Impact**
+A live demonstration of the tariff and unit cost impact on total product cost and total landed cost is shown below
+![Vendor Performance](images/supply_chain.gif)
 
 ## 🔍 Analytical Approach
 
