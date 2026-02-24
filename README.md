@@ -97,7 +97,6 @@ Star Schema Design:
    └─ Warehouse (Inventory Operations)
 ```
 
-
 ![Data Model](images/data_model.jpg)
 
 **Data Quality Framework:**
@@ -285,7 +284,7 @@ supply-chain-analytics/
 │   ├── supply_chain_full_project.xlsx   # Main Excel dashboard
 │   └── screenshots/             # Dashboard images
 ├── images/
-│   ├── datamodel.jpg
+│   ├── data_model.jpg
 │   ├── executive_summary.jpg
 │   ├── import_burden.jpg
 │   ├── inventory_discrepancy.jpg
