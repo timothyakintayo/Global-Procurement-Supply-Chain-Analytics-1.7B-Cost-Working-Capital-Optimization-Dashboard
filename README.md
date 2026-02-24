@@ -97,6 +97,7 @@ Star Schema Design:
    └─ Warehouse (Inventory Operations)
 ```
 
+
 ![Data Model](images/data_model.jpg)
 
 **Data Quality Framework:**
