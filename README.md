@@ -312,9 +312,9 @@ supply-chain-analytics/
 ## 📞 Contact
 
 **Timothy Akintayo**  
-Supply Chain & Procurement Analyst | Advanced Excel & Data Modeling Specialist
+Data Analyst | Advanced Excel & Data Modeling Specialist | Power BI | SQL | Python | Azure Analytics
 
-📧 timothym.akintayo@gmail.com  
+📧 timothym.akintayo@gmail.com
 💼 [LinkedIn](https://linkedin.com/in/timothy-akintayo)  
 🌐 [Portfolio](https://timothyakintayo.github.io)
 
