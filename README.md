@@ -3,7 +3,7 @@
 
 ![Dashboard Preview](images/executive_summary.jpg)
 
-## 🎯 Project Overview
+## Project Overview
 
 Comprehensive supply chain analytics project analyzing $6.5B in global procurement spend across 10 countries, 200+ products, and 10 vendors to identify cost optimization opportunities and operational inefficiencies. Identified $300M+ working capital optimization opportunities through cycle time analysis and inventory accuracy improvements. Developed a purchase forecast model that helps managers see the cost implication of tariff increase and unit cost increase real time and mitigate the expected impact before they happen. Built with Excel Power Pivot and DAX.
 
@@ -171,7 +171,7 @@ Star Schema Design:
 
 ---
 
-## 🛠️ Technical Implementation
+## Technical Implementation
 
 ### Excel Power Pivot & DAX Measures (25+ Measures)
 
@@ -289,7 +289,7 @@ supply-chain-analytics/
 
 ---
 
-## 🚀 Key Takeaways for Employers
+## Key Takeaways for Employers
 
 **What This Project Demonstrates:**
 
